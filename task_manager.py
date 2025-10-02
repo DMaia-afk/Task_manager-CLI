@@ -1,31 +1,58 @@
 from menus import *
 
+start = True
 users = {}
-start_form = "yes"
+tasks = {}
 print(users)
 
-option = main_login()
+main_option = main_login()
 
-while start_form == "yes" and option=="L"or option=="C":
-    if option=="L":
-        login_menu(users)
-        if login_menu == False:
-            print("Unespected error!!!")
+while True:
+    if main_option=="L":
+        user_id, user_name = login_menu(users)
+        if user_name == False:
+            print("\nUnespected error!!!")
+            main_option = main_login()
         else:
-            main_login(users['user_name'])
+            option = main_menu(user_name=user_name)
+            while True:
+                if option == "A":
+                    add_new_task(user_id, tasks=tasks)
+                    print(tasks)
+                    verification = question_verification()
+                    while verification == "Y":
+                        add_new_task(user_id, tasks=tasks)
+                        verification = question_verification()
+                    else:
+                        option = main_menu(user_name=user_name)
+                elif option == "L":
+                    list_all_tasks(user_id, tasks=tasks)
+                    option = main_menu(user_name=user_name)
+                elif option == "M":
+                    pass
+                elif option == "R":
+                    pass
+                elif option == "E":
+                    break
+                else:
+                    print("Pls! Choose a correctly option")
 
 
 
-    elif option=="C":
-        create_menu(users=users)
+
+    elif main_option=="C":
+        create_user_menu(users=users)
         print(users)  
-        option = main_login()
+        main_option = main_login()
 
     
     
     ## Continuar com a lógica
-    else:
+    elif main_option=="E":
         break
-
+        
+    else:
+        print("Pls, send again!")
+        main_option = main_login()
 
 
