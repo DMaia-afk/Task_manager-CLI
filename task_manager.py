@@ -1,9 +1,12 @@
-from menus import *
+from menus import * 
+from tasks import *
+from login import *
+from data import *
 
-start = True
-users = {}
-tasks = {}
+users = load_users()
 print(users)
+tasks = load_tasks()
+
 
 main_option = main_login()
 
@@ -14,45 +17,62 @@ while True:
             print("\nUnespected error!!!")
             main_option = main_login()
         else:
-            option = main_menu(user_name=user_name)
-            while True:
+            option = tasks_menu(user_name=user_name)
+            menu_2 = True
+            while menu_2:
                 if option == "A":
                     add_new_task(user_id, tasks=tasks)
                     print(tasks)
                     verification = question_verification()
+                    save_tasks(tasks=tasks)
                     while verification == "Y":
                         add_new_task(user_id, tasks=tasks)
                         verification = question_verification()
                     else:
-                        option = main_menu(user_name=user_name)
+                        option = tasks_menu(user_name=user_name)
                 elif option == "L":
                     list_all_tasks(user_id, tasks=tasks)
-                    option = main_menu(user_name=user_name)
+                    save_tasks(tasks=tasks)
+                    option = tasks_menu(user_name=user_name)
                 elif option == "M":
-                    pass
+                    mark_task(user_id, tasks=tasks)
+                    verification = question_verification()
+                    while verification == "Y":
+                        mark_task(user_id, tasks=tasks)
+                        save_tasks(tasks=tasks)
+                        verification = question_verification()
+                    else:
+                        option = tasks_menu(user_name=user_name)
                 elif option == "R":
-                    pass
+                    remove_task(user_id, tasks=tasks)
+                    save_tasks(tasks=tasks)
+                    verification = question_verification()
+                    while verification == "Y":
+                        remove_task(user_id, tasks=tasks)
+                        verification = question_verification()
+                    else:
+                        option = tasks_menu(user_name=user_name)
+                        
                 elif option == "E":
-                    break
+                    menu_2 = False
+                    save_tasks(tasks=tasks)
+                    main_option = main_login()
+                    
                 else:
-                    print("Pls! Choose a correctly option")
-
-
-
+                    print("Please! Choose a correctly option")
+                    option = tasks_menu(user_name=user_name)
 
     elif main_option=="C":
-        create_user_menu(users=users)
-        print(users)  
+        if create_user_menu(users=users):
+            save_users(users=users)
+            
         main_option = main_login()
 
-    
-    
-    ## Continuar com a lógica
     elif main_option=="E":
         break
         
     else:
-        print("Pls, send again!")
+        print("Please, send again!")
         main_option = main_login()
 
 
