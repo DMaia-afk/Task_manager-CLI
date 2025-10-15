@@ -4,7 +4,6 @@ from login import *
 from data import *
 
 users = load_users()
-print(users)
 tasks = load_tasks()
 
 
@@ -22,7 +21,6 @@ while True:
             while menu_2:
                 if option == "A":
                     add_new_task(user_id, tasks=tasks)
-                    print(tasks)
                     verification = question_verification()
                     save_tasks(tasks=tasks)
                     while verification == "Y":
